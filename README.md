@@ -41,26 +41,6 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* شريط التنبيهات العلوي */
-        .alert-bar {
-            width: 100%;
-            background: linear-gradient(90deg, #e74c3c, #c0392b);
-            color: white;
-            padding: 15px;
-            text-align: center;
-            position: fixed;
-            top: 70px;
-            z-index: 999;
-            box-shadow: 0 5px 25px rgba(0,0,0,0.3);
-            font-family: 'Almarai', sans-serif;
-        }
-
-        .alert-bar a {
-            color: white;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
         /* شريط التحميل العلوي */
         .download-bar {
             width: 100%;
@@ -93,13 +73,110 @@
             50% { box-shadow: 0 0 20px 10px rgba(255,255,255,0.1); }
         }
 
-        /* نظام الشرائح المحسّن */
+        /* شريط التنبيهات العلوي */
+        .alert-bar {
+            width: 100%;
+            background: linear-gradient(90deg, #e74c3c, #c0392b);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            position: fixed;
+            top: 70px; /* تأكد من أن هذا يساوي ارتفاع شريط التحميل */
+            z-index: 999;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.3);
+            font-family: 'Almarai', sans-serif;
+            animation: alertPulse 2s infinite;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+        }
+
+        @keyframes alertPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        .alert-bar a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .alert-bar a i {
+            font-size: 1.2em;
+        }
+
+        .alert-bar .close-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .alert-bar .close-btn:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        .alert-bar .register-btn {
+            background: var(--accent-color);
+            color: var(--primary-color);
+            padding: 8px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .alert-bar .register-btn:hover {
+            background: white;
+            color: var(--primary-color);
+            transform: scale(1.05);
+        }
+
+        /* عنوان الصفحة والتعريف بها */
+        .header-section {
+            text-align: center;
+            padding: 150px 20px 50px;
+            background: rgba(0,0,0,0.7);
+            margin-top: 140px;
+        }
+
+        .header-section h1 {
+            font-size: 3.5em;
+            color: var(--accent-color);
+            margin-bottom: 20px;
+            animation: fadeIn 2s ease-in-out;
+            text-shadow: 0 0 20px rgba(255,215,0,0.5);
+        }
+
+        .header-section p {
+            font-size: 1.8em;
+            color: white;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+            animation: fadeIn 3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* باقي الأقسام */
         .slideshow-container {
             width: 100%;
             height: 500px;
             position: relative;
             overflow: hidden;
-            margin: 150px 0 50px;
+            margin: 50px 0;
             perspective: 1000px;
         }
 
@@ -509,17 +586,28 @@
     <div class="floating-shape shape1"></div>
     <div class="floating-shape shape2"></div>
 
-    <!-- شريط التنبيهات العلوي -->
-    <div class="alert-bar">
-        <a href="#">عرض خاص: خصم 20% على جميع الحاسبات لفترة محدودة!</a>
-    </div>
-
     <!-- شريط التحميل العلوي -->
     <div class="download-bar">
         <a href="https://median.co/share/wwnmbr#apk">
             <i class="fas fa-download fa-bounce"></i>
             حمّل التطبيق الآن - استمتع بتجربة فريدة!
         </a>
+    </div>
+
+    <!-- شريط التنبيهات العلوي -->
+    <div class="alert-bar">
+        <a href="https://guyc-ye.com/membership/">
+            <i class="fas fa-gift"></i>
+            عرض خاص: خصم 20% على رسوم التسجيل لعضوية الاتحاد العام للمقاولين اليمنيين
+        </a>
+        <a href="https://guyc-ye.com/membership/" class="register-btn">سجل الآن</a>
+        <button class="close-btn" onclick="this.parentElement.style.display='none';">&times;</button>
+    </div>
+
+    <!-- عنوان الصفحة والتعريف بها -->
+    <div class="header-section">
+        <h1>حاسبة المقاول</h1>
+        <p>حاسبة متكاملة لحساب تكاليف البناء والطرقات بدقة عالية. استخدم حاسباتنا الذكية لتوفير الوقت والمال.</p>
     </div>
 
     <!-- الشرائح العلوية -->
