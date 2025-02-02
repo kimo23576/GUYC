@@ -1,765 +1,1062 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>حاسبة المقاول - منصة الاتحاد العام للمقاولين اليمنيين</title>
-    <meta name="description" content="منصة متكاملة لحساب تكاليف البناء والطرقات بدقة عالية. استخدم حاسباتنا الذكية لتوفير الوقت والمال.">
-    <meta name="keywords" content="حاسبة بناء, حاسبة طرقات, مقاولين يمن, تكاليف بناء, مشاريع إنشائية">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Almarai:wght@400;700&display=swap');
-        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap');
-        
-        :root {
-            --primary-color: #8B4513;
-            --secondary-color: #1abc9c;
-            --accent-color: #FFD700;
-            --text-color: #333;
-            --background-gradient: linear-gradient(45deg, #654321, #8B4513, #A0522D);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: 'Tajawal', sans-serif;
-            background: var(--background-gradient);
-            animation: gradientBG 15s ease infinite;
-            background-size: 400% 400%;
-            min-height: 100vh;
-            position: relative;
-            color: var(--text-color);
-        }
-
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* شريط التحميل العلوي */
-        .download-bar {
-            width: 100%;
-            background: linear-gradient(90deg, var(--secondary-color), #16a085);
-            padding: 20px;
-            text-align: center;
-            position: fixed;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 5px 25px rgba(0,0,0,0.3);
-            border-bottom: 3px solid var(--accent-color);
-        }
-
-        .download-bar a {
-            color: white;
-            text-decoration: none;
-            font-size: 1.4em;
-            display: inline-flex;
-            align-items: center;
-            gap: 15px;
-            padding: 15px 30px;
-            border-radius: 50px;
-            background: rgba(255,255,255,0.15);
-            transition: all 0.3s;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(255,255,255,0.3); }
-            50% { box-shadow: 0 0 20px 10px rgba(255,255,255,0.1); }
-        }
-
-        /* شريط التنبيهات العلوي */
-        .alert-bar {
-            width: 100%;
-            background: linear-gradient(90deg, #e74c3c, #c0392b);
-            color: white;
-            padding: 15px;
-            text-align: center;
-            position: fixed;
-            top: 70px; /* تأكد من أن هذا يساوي ارتفاع شريط التحميل */
-            z-index: 999;
-            box-shadow: 0 5px 25px rgba(0,0,0,0.3);
-            font-family: 'Almarai', sans-serif;
-            animation: alertPulse 2s infinite;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 15px;
-        }
-
-        @keyframes alertPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.02); }
-        }
-
-        .alert-bar a {
-            color: white;
-            text-decoration: none;
-            font-weight: bold;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .alert-bar a i {
-            font-size: 1.2em;
-        }
-
-        .alert-bar .close-btn {
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            color: white;
-            padding: 5px 10px;
-            border-radius: 50%;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .alert-bar .close-btn:hover {
-            background: rgba(255, 255, 255, 0.4);
-        }
-
-        .alert-bar .register-btn {
-            background: var(--accent-color);
-            color: var(--primary-color);
-            padding: 8px 20px;
-            border-radius: 25px;
-            text-decoration: none;
-            font-weight: bold;
-            transition: all 0.3s;
-        }
-
-        .alert-bar .register-btn:hover {
-            background: white;
-            color: var(--primary-color);
-            transform: scale(1.05);
-        }
-
-        /* عنوان الصفحة والتعريف بها */
-        .header-section {
-            text-align: center;
-            padding: 150px 20px 50px;
-            background: rgba(0,0,0,0.7);
-            margin-top: 140px;
-        }
-
-        .header-section h1 {
-            font-size: 3.5em;
-            color: var(--accent-color);
-            margin-bottom: 20px;
-            animation: fadeIn 2s ease-in-out;
-            text-shadow: 0 0 20px rgba(255,215,0,0.5);
-        }
-
-        .header-section p {
-            font-size: 1.8em;
-            color: white;
-            max-width: 800px;
-            margin: 0 auto;
-            line-height: 1.6;
-            animation: fadeIn 3s ease-in-out;
-        }
-
-        @keyframes fadeIn {
-            0% { opacity: 0; transform: translateY(20px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-
-        /* باقي الأقسام */
-        .slideshow-container {
-            width: 100%;
-            height: 500px;
-            position: relative;
-            overflow: hidden;
-            margin: 50px 0;
-            perspective: 1000px;
-        }
-
-        .slide {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 40px;
-            opacity: 0;
-            transform-style: preserve-3d;
-            animation: slideShow 42s infinite;
-            background: rgba(0,0,0,0.5);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        }
-
-        .slide:nth-child(1) { animation-delay: 0s; }
-        .slide:nth-child(2) { animation-delay: 7s; }
-        .slide:nth-child(3) { animation-delay: 14s; }
-        .slide:nth-child(4) { animation-delay: 21s; }
-        .slide:nth-child(5) { animation-delay: 28s; }
-        .slide:nth-child(6) { animation-delay: 35s; }
-
-        @keyframes slideShow {
-            0% { opacity: 0; transform: translateX(100%) rotateY(30deg); }
-            3%, 16% { opacity: 1; transform: translateX(0) rotateY(0); }
-            19%, 100% { opacity: 0; transform: translateX(-100%) rotateY(-30deg); }
-        }
-
-        .slide h2 {
-            font-size: 3em;
-            color: var(--accent-color);
-            text-shadow: 0 0 20px rgba(255,215,0,0.5);
-            margin-bottom: 30px;
-            position: relative;
-        }
-
-        .slide h2::after {
-            content: '';
-            position: absolute;
-            bottom: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100px;
-            height: 3px;
-            background: var(--secondary-color);
-        }
-
-        .slide p {
-            font-size: 1.8em;
-            color: white;
-            max-width: 1000px;
-            line-height: 1.6;
-            text-align: center;
-            padding: 0 20px;
-        }
-
-        /* أزرار الحاسبات */
-        .calculators-section {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 40px;
-            padding: 40px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .calculator-card {
-            background: rgba(255,255,255,0.95);
-            border-radius: 20px;
-            padding: 30px;
-            text-align: center;
-            transition: all 0.4s;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .calculator-card::before {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: var(--secondary-color);
-            transform: scaleX(0);
-            transition: transform 0.3s;
-        }
-
-        .calculator-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
-        }
-
-        .calculator-card:hover::before {
-            transform: scaleX(1);
-        }
-
-        .calculator-icon {
-            font-size: 4em;
-            color: var(--primary-color);
-            margin: 20px 0;
-            transition: all 0.3s;
-        }
-
-        .calculator-card:hover .calculator-icon {
-            transform: rotate(15deg) scale(1.2);
-            color: var(--secondary-color);
-        }
-
-        .calculator-btn {
-            display: inline-block;
-            padding: 15px 40px;
-            background: linear-gradient(45deg, var(--primary-color), #A0522D);
-            color: white;
-            border-radius: 30px;
-            text-decoration: none;
-            margin-top: 20px;
-            transition: all 0.3s;
-            border: 2px solid transparent;
-        }
-
-        .calculator-btn:hover {
-            background: white;
-            color: var(--primary-color);
-            border-color: var(--primary-color);
-            transform: scale(1.05);
-        }
-
-        .calculator-card h3 {
-            font-size: 1.8em;
-            color: var(--primary-color);
-            margin-bottom: 15px;
-            font-family: 'Almarai', sans-serif;
-        }
-
-        .calculator-card p {
-            font-size: 1.1em;
-            color: var(--text-color);
-            line-height: 1.6;
-            margin-bottom: 20px;
-        }
-
-        /* قسم الأسئلة الشائعة */
-        .faq-section {
-            background: rgba(0,0,0,0.7);
-            padding: 60px 20px;
-            margin-top: 100px;
-        }
-
-        .faq-section h2 {
-            text-align: center;
-            font-size: 2.5em;
-            color: var(--accent-color);
-            margin-bottom: 40px;
-        }
-
-        .faq-item {
-            background: rgba(255,255,255,0.1);
-            padding: 20px;
-            margin: 10px 0;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .faq-item:hover {
-            background: rgba(255,255,255,0.2);
-        }
-
-        .faq-item h3 {
-            font-size: 1.5em;
-            color: var(--accent-color);
-        }
-
-        .faq-item p {
-            font-size: 1.2em;
-            color: white;
-            margin-top: 10px;
-            display: none;
-        }
-
-        /* قسم الشهادات والتقييمات */
-        .testimonials-section {
-            background: rgba(0,0,0,0.7);
-            padding: 60px 20px;
-            margin-top: 100px;
-        }
-
-        .testimonials-section h2 {
-            text-align: center;
-            font-size: 2.5em;
-            color: var(--accent-color);
-            margin-bottom: 40px;
-        }
-
-        .testimonials-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .testimonial-card {
-            background: rgba(255,255,255,0.1);
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            transition: all 0.3s;
-        }
-
-        .testimonial-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-        }
-
-        .testimonial-card img {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            margin-bottom: 15px;
-        }
-
-        .testimonial-card h3 {
-            font-size: 1.5em;
-            color: var(--accent-color);
-            margin-bottom: 10px;
-        }
-
-        .testimonial-card p {
-            font-size: 1.1em;
-            color: white;
-            line-height: 1.6;
-        }
-
-        /* قسم الفيديو التوضيحي */
-        .video-section {
-            background: rgba(0,0,0,0.7);
-            padding: 60px 20px;
-            margin-top: 100px;
-            text-align: center;
-        }
-
-        .video-section h2 {
-            font-size: 2.5em;
-            color: var(--accent-color);
-            margin-bottom: 40px;
-        }
-
-        .video-container {
-            max-width: 800px;
-            margin: 0 auto;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        }
-
-        .video-container iframe {
-            width: 100%;
-            height: 450px;
-            border: none;
-        }
-
-        /* قسم التواصل المباشر */
-        .contact-form-section {
-            background: rgba(0,0,0,0.7);
-            padding: 60px 20px;
-            margin-top: 100px;
-        }
-
-        .contact-form-section h2 {
-            text-align: center;
-            font-size: 2.5em;
-            color: var(--accent-color);
-            margin-bottom: 40px;
-        }
-
-        .contact-form {
-            max-width: 600px;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .contact-form input, .contact-form textarea {
-            padding: 15px;
-            border-radius: 10px;
-            border: 2px solid var(--accent-color);
-            background: rgba(255,255,255,0.1);
-            color: white;
-            font-size: 1.1em;
-        }
-
-        .contact-form input::placeholder, .contact-form textarea::placeholder {
-            color: #ccc;
-        }
-
-        .contact-form button {
-            padding: 15px;
-            border-radius: 10px;
-            background: var(--secondary-color);
-            color: white;
-            font-size: 1.2em;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .contact-form button:hover {
-            background: #16a085;
-        }
-
-        /* شريط التواصل السفلي */
-        .contact-bar {
-            width: 100%;
-            background: rgba(0,0,0,0.9);
-            color: white;
-            padding: 40px;
-            text-align: center;
-            margin-top: 100px;
-            position: relative;
-        }
-
-        .contact-bar::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-        }
-
-        .contact-links {
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-            margin: 30px 0;
-            flex-wrap: wrap;
-        }
-
-        .contact-links a {
-            color: var(--accent-color);
-            text-decoration: none;
-            font-size: 1.2em;
-            padding: 10px 20px;
-            border-radius: 30px;
-            border: 2px solid var(--accent-color);
-            transition: all 0.3s;
-        }
-
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        .social-links a {
-            color: var(--accent-color);
-            font-size: 1.5em;
-            transition: all 0.3s;
-        }
-
-        .social-links a:hover {
-            color: var(--secondary-color);
-        }
-
-        @media (max-width: 768px) {
-            .slide h2 { font-size: 2em; }
-            .slide p { font-size: 1.3em; }
-            .calculators-section { grid-template-columns: 1fr; padding: 20px; }
-            .calculator-card { margin-bottom: 20px; }
-            .contact-links { gap: 20px; }
-        }
-
-        /* تأثيرات إضافية */
-        .floating-shape {
-            position: fixed;
-            background: rgba(255,255,255,0.1);
-            border-radius: 50%;
-            animation: float 15s infinite;
-            pointer-events: none;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translate(0, 0) rotate(0deg); }
-            25% { transform: translate(100px, 100px) rotate(90deg); }
-            50% { transform: translate(-50px, 200px) rotate(180deg); }
-            75% { transform: translate(150px, -100px) rotate(270deg); }
-        }
-
-        .shape1 { width: 200px; height: 200px; top: 20%; left: 10%; }
-        .shape2 { width: 150px; height: 150px; top: 60%; right: 15%; animation-delay: -5s; }
-    </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>النظام الذكي لحساب الأضرار والخسائر والتعويضات</title>
+  <!-- استدعاء Font Awesome للأيقونات -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- استخدام خط "Cairo" لإحساس ملكي وفخم -->
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+  <!-- مكتبة jsPDF للتصدير إلى PDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <!-- Chart.js (لإضافة رسوم بيانية إذا دعت الحاجة) -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    /* إعدادات الألوان والخطوط الأساسية - ألوان داكنة وفاخرة */
+    :root {
+      --primary-color: #1B2631;         /* أزرق داكن جداً */
+      --secondary-color: #212F3D;       /* تدرج أزرق غامق */
+      --accent-color: #F1C40F;          /* أصفر ذهبي لامع */
+      --info-color: #2980B9;
+      --bg-color: #1B2631;
+      --section-bg: linear-gradient(135deg, #2E4053, #1B2631); /* تدرج داكن */
+      --section-border: var(--accent-color);
+      --text-color: #ECF0F1;
+      --input-bg: #2C3E50;
+      --animation-speed: 0.8s;
+    }
+    
+    /* إعادة تعيين الخطوط والتنسيق العام */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Cairo', sans-serif;
+    }
+    
+    body {
+      background: var(--bg-color);
+      color: var(--text-color);
+      line-height: 1.8;
+      position: relative;
+      overflow-x: hidden;
+      padding-bottom: 100px;
+    }
+    
+    /* تأثير فقاعات متحركة للخلفية */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle, rgba(241,196,15,0.25) 1px, transparent 1px);
+      background-size: 40px 40px;
+      opacity: 0.3;
+      z-index: -2;
+      animation: moveBubbles 30s linear infinite;
+    }
+    @keyframes moveBubbles {
+      from { transform: translateY(0); }
+      to { transform: translateY(-300px); }
+    }
+    
+    /* الحاوية الرئيسية */
+    .container {
+      width: 95%;
+      max-width: 1400px;
+      margin: 40px auto;
+      padding: 30px;
+      background: var(--section-bg);
+      border-radius: 20px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.35);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    /* الهيدر */
+    .header {
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      color: #fff;
+      padding: 3rem 2rem;
+      text-align: center;
+      border-radius: 20px;
+      margin-bottom: 30px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+      animation: slideIn var(--animation-speed) ease-out;
+    }
+    .header::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 10px;
+      background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
+      animation: glow 3s infinite;
+    }
+    @keyframes slideIn {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    @keyframes glow {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 1; }
+    }
+    .header h1 { font-size: 3.4rem; margin-bottom: 0.5rem; }
+    .header h2 { font-size: 1.8rem; margin-bottom: 1rem; }
+    .header a { color: #FFD700; text-decoration: none; font-weight: bold; }
+    .reference-number {
+      background: var(--accent-color);
+      padding: 1rem 2rem;
+      border-radius: 30px;
+      margin-top: 1.5rem;
+      display: inline-block;
+      font-weight: 700;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+    }
+    
+    /* الأقسام - خلفيات داكنة وألوان نابضة */
+    .section {
+      background: linear-gradient(135deg, #2C3E50, #1B2631);
+      border-radius: 15px;
+      padding: 2.5rem;
+      margin-bottom: 25px;
+      border: 2px double var(--accent-color);
+      position: relative;
+      overflow: hidden;
+      animation: fadeIn 0.8s ease-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    .section-title {
+      color: var(--accent-color);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      font-size: 1.8rem;
+      position: relative;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--accent-color);
+    }
+    .section-title i { font-size: 2rem; }
+    .section-intro {
+      background: linear-gradient(135deg, #34495E, #2C3E50);
+      padding: 1.8rem;
+      border-radius: 10px;
+      margin-bottom: 2rem;
+      border-left: 4px solid var(--accent-color);
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: #ECF0F1;
+    }
+    .input-group { margin-bottom: 2rem; }
+    label { margin-bottom: 0.8rem; font-weight: bold; color: var(--accent-color); }
+    input, select, textarea {
+      width: 100%;
+      padding: 1rem;
+      border: 2px solid #555;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+      margin-bottom: 1rem;
+      background: #2C3E50;
+      color: #ECF0F1;
+    }
+    input:focus, select:focus, textarea:focus { border-color: var(--accent-color); outline: none; }
+    .dynamic-list { margin: 1.5rem 0; }
+    .item-card {
+      background: #212F3D;
+      border: 2px solid #555;
+      padding: 1.5rem;
+      margin: 10px 0;
+      border-radius: 10px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+      align-items: center;
+      position: relative;
+      animation: fadeIn 0.8s ease-out;
+    }
+    .add-btn, .btn {
+      background: var(--primary-color);
+      color: #fff;
+      border: 2px double var(--accent-color);
+      padding: 1rem 2rem;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin: 0.5rem 0;
+    }
+    .add-btn:hover, .btn:hover { background: var(--secondary-color); transform: scale(1.02); }
+    .remove-btn {
+      background: var(--accent-color);
+      color: #fff;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 6px;
+      cursor: pointer;
+      position: absolute;
+      left: 15px;
+      bottom: 15px;
+      transition: transform 0.3s ease;
+    }
+    .remove-btn:hover { transform: scale(1.1); }
+    .total-box {
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      color: #fff;
+      padding: 2rem;
+      border-radius: 15px;
+      text-align: center;
+      margin-top: 2rem;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.03); }
+      100% { transform: scale(1); }
+    }
+    .legal-references {
+      background: linear-gradient(135deg, #2C3E50, #212F3D);
+      padding: 2rem;
+      border-radius: 12px;
+      margin-top: 3rem;
+      border: 2px dashed var(--accent-color);
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #ECF0F1;
+    }
+    
+    /* تحسين الفوتر */
+    .footer {
+      background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+      color: #fff;
+      padding: 2rem;
+      text-align: center;
+      border-radius: 15px;
+      margin-top: 3rem;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.45);
+    }
+    .footer .contact-box {
+      display: inline-block;
+      background: rgba(0,0,0,0.3);
+      padding: 10px 20px;
+      margin: 5px;
+      border-radius: 25px;
+    }
+    .footer .contact-box i {
+      margin-left: 8px;
+      color: var(--accent-color);
+    }
+    .footer a {
+      color: var(--accent-color);
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .footer::before {
+      content: "";
+      position: absolute;
+      top: -50px;
+      left: 0;
+      width: 100%;
+      height: 150px;
+      background: url('https://i.ibb.co/7n0Lzv0/footer-bg.png') no-repeat center;
+      background-size: cover;
+      opacity: 0.2;
+      animation: float 5s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(20px); }
+    }
+    
+    /* أقسام إضافية: دليل المستخدم والتدريب وإدارة ملفات المطالبات */
+    .extra-section {
+      background: linear-gradient(135deg, #1B2631, #212F3D);
+      border-radius: 15px;
+      padding: 2.5rem;
+      margin-bottom: 25px;
+      border: 2px double var(--accent-color);
+      position: relative;
+      overflow: hidden;
+      animation: fadeIn 0.8s ease-out;
+      color: #ECF0F1;
+    }
+    .extra-section .section-title {
+      color: var(--accent-color);
+      border-bottom: 2px solid var(--accent-color);
+    }
+    .extra-section .section-intro {
+      background: linear-gradient(135deg, #34495E, #2C3E50);
+      padding: 1.8rem;
+      border-radius: 10px;
+      margin-bottom: 2rem;
+      border-left: 4px solid var(--accent-color);
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: #ECF0F1;
+    }
+    
+    /* ميديا كويري للهواتف */
+    @media (max-width: 768px) {
+      .header h1 { font-size: 2.8rem; }
+      .header h2 { font-size: 1.4rem; }
+      .section-title { font-size: 1.6rem; }
+    }
+    
+    @media print {
+      body { font-size: 12pt; background: white !important; }
+      .header, .footer, button { display: none !important; }
+    }
+  </style>
 </head>
 <body>
-    <div class="floating-shape shape1"></div>
-    <div class="floating-shape shape2"></div>
-
-    <!-- شريط التحميل العلوي -->
-    <div class="download-bar">
-        <a href="https://median.co/share/wwnmbr#apk">
-            <i class="fas fa-download fa-bounce"></i>
-            حمّل التطبيق الآن - استمتع بتجربة فريدة!
-        </a>
+  <div class="container">
+    <!-- الهيدر -->
+    <div class="header">
+      <h1>الإستمارة الذكية لتسجيل الأضرار والخسائر</h1>
+      <h2>قطاع المقاولات اليمني - الاتحاد العام للمقاولين اليمنيين</h2>
+      <div class="reference-number" id="fileNumber"></div>
+      <div class="timestamp" id="currentDate"></div>
+      <p>زوروا موقعنا: <a href="https://guyc-ye.com/" target="_blank">guyc-ye.com</a></p>
     </div>
-
-    <!-- شريط التنبيهات العلوي -->
-    <div class="alert-bar">
-        <a href="https://guyc-ye.com/membership/">
-            <i class="fas fa-gift"></i>
-            عرض خاص: خصم 20% على رسوم التسجيل لعضوية الاتحاد العام للمقاولين اليمنيين
-        </a>
-        <a href="https://guyc-ye.com/membership/" class="register-btn">سجل الآن</a>
-        <button class="close-btn" onclick="this.parentElement.style.display='none';">&times;</button>
-    </div>
-
-    <!-- عنوان الصفحة والتعريف بها -->
-    <div class="header-section">
-        <h1>حاسبة المقاول</h1>
-        <p>حاسبة متكاملة لحساب تكاليف البناء والطرقات بدقة عالية. استخدم حاسباتنا الذكية لتوفير الوقت والمال.</p>
-    </div>
-
-    <!-- الشرائح العلوية -->
-    <div class="slideshow-container">
-        <div class="slide">
-            <h2>🏗️ مميزات الحاسبة</h2>
-            <p>• دقة حسابية تصل إلى 90%</p>
-            <p>• تحديثات الأسعار اليومية</p>
-            <p>• واجهة مستخدم سهلة التعلم</p>
-        </div>
-        <div class="slide">
-            <h2>📊 طريقة الاستخدام</h2>
-            <p>1. اختر نوع الحاسبة</p>
-            <p>2. أدخل البيانات المطلوبة</p>
-            <p>3. احصل على النتائج فورًا</p>
-        </div>
-        <div class="slide">
-            <h2>💎 المكونات الرئيسية</h2>
-            <p>• محرك حسابي ذكي</p>
-            <p>• قاعدة بيانات شاملة</p>
-            <p>• نظام تقارير متكامل</p>
-        </div>
-        <div class="slide">
-            <h2>🎯 النتائج المتوقعة</h2>
-            <p>• توفير 40% من الوقت</p>
-            <p>• خفض التكاليف بنسبة 25%</p>
-            <p>• دقة أعلى في التخطيط</p>
-        </div>
-        <div class="slide">
-            <h2>🌟 فوائد الاستخدام</h2>
-            <p>• تخطيط دقيق للمشاريع</p>
-            <p>• تجنب الأخطاء الحسابية</p>
-            <p>• توفير الموارد المالية</p>
-        </div>
-        <div class="slide">
-            <h2>📞 تواصل معنا</h2>
-            <p>هاتف: 01-450553</p>
-            <p>البريد الإلكتروني: info@guyc-ye.com</p>
-        </div>
-    </div>
-
-    <!-- أزرار الحاسبات -->
-    <div class="calculators-section">
-        <div class="calculator-card">
-            <i class="fas fa-building calculator-icon"></i>
-            <h3>حاسبة البناء المتكاملة</h3>
-            <p>أداة ذكية لحساب تكاليف البناء بدقة عالية، تشمل جميع مراحل المشروع من التخطيط إلى التنفيذ.</p>
-            <a href="https://guyc-yemen.com/colcletor/" class="calculator-btn">ابدأ الحساب الآن</a>
-        </div>
-
-        <div class="calculator-card">
-            <i class="fas fa-road calculator-icon"></i>
-            <h3>حاسبة الطرقات الذكية</h3>
-            <p>نظام متقدم لحساب مشاريع الطرق بدقة 90%، يشمل دراسة الطبقات التحتية وتكاليف الإنشاء.</p>
-            <a href="https://guyc-yemen.com/road-calculator/" class="calculator-btn">ابدأ الحساب الآن</a>
-        </div>
-    </div>
-
-    <!-- قسم الأسئلة الشائعة -->
-    <div class="faq-section">
-        <h2>الأسئلة الشائعة</h2>
-        <div class="faq-item">
-            <h3>كيف يمكنني استخدام الحاسبة؟</h3>
-            <p>اختر نوع الحاسبة المناسبة، أدخل البيانات المطلوبة، ثم اضغط على "ابدأ الحساب".</p>
-        </div>
-        <div class="faq-item">
-            <h3>هل الحاسبة مجانية؟</h3>
-            <p>نعم، الحاسبة متاحة للاستخدام المجاني لجميع المستخدمين.</p>
-        </div>
-        <div class="faq-item">
-            <h3>هل يمكنني الحصول على تقرير مفصل؟</h3>
-            <p>نعم، يمكنك تحميل تقرير مفصل بعد الانتهاء من الحسابات.</p>
-        </div>
-    </div>
-
-    <!-- قسم الشهادات والتقييمات -->
-    <div class="testimonials-section">
-        <h2>ما يقول عملاؤنا</h2>
-        <div class="testimonials-grid">
-            <div class="testimonial-card">
-                <img src="https://via.placeholder.com/80" alt="صورة العميل">
-                <h3>محمد أحمد</h3>
-                <p>"الحاسبة ساعدتني في توفير الوقت والمال، أنصح الجميع باستخدامها."</p>
-            </div>
-            <div class="testimonial-card">
-                <img src="https://via.placeholder.com/80" alt="صورة العميل">
-                <h3>فاطمة علي</h3>
-                <p>"واجهة مستخدم رائعة ودقة عالية في النتائج، شكرًا لكم."</p>
-            </div>
-            <div class="testimonial-card">
-                <img src="https://via.placeholder.com/80" alt="صورة العميل">
-                <h3>علي حسن</h3>
-                <p>"أداة ممتازة لتخطيط المشاريع الإنشائية، أنصح بها كل مقاول."</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- قسم الفيديو التوضيحي -->
-    <div class="video-section">
-        <h2>شاهد كيف تعمل الحاسبة</h2>
-        <div class="video-container">
-            <iframe src="https://www.youtube.com/embed/YrebsJj1S48" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-        </div>
-    </div>
-
-    <!-- قسم التواصل المباشر -->
-    <div class="contact-form-section">
-        <h2>تواصل معنا مباشرة</h2>
-        <form class="contact-form">
-            <input type="text" placeholder="اسمك" required>
-            <input type="email" placeholder="بريدك الإلكتروني" required>
-            <textarea placeholder="رسالتك" rows="5" required></textarea>
-            <button type="submit">إرسال</button>
-        </form>
-    </div>
-
-    <!-- شريط التواصل السفلي -->
-    <div class="contact-bar">
-        <h3 style="font-size: 1.8em; margin-bottom: 30px;">تواصل معنا بسهولة</h3>
-        <div class="contact-links">
-            <a href="https://guyc-ye.com/">
-                <i class="fas fa-globe"></i>
-                الموقع الرسمي
-            </a>
-            <a href="mailto:info@guyc-ye.com">
-                <i class="fas fa-envelope"></i>
-                البريد الإلكتروني
-            </a>
-            <a href="tel:01450553">
-                <i class="fas fa-phone"></i>
-                01-450553
-            </a>
-        </div>
-        <div class="social-links">
-            <a href="https://m.facebook.com/guyc.ye/" target="_blank"><i class="fab fa-facebook"></i></a>
-            <a href="https://x.com/guycyemen" target="_blank"><i class="fab fa-twitter"></i></a>
-            <a href="https://m.youtube.com/@guyc-ye" target="_blank"><i class="fab fa-youtube"></i></a>
-            <a href="https://wa.me/message/VOVMQQVM52O7I1" target="_blank"><i class="fab fa-whatsapp"></i></a>
-        </div>
-        <p style="margin-top: 30px; color: #888;">
-            © 2024 جميع الحقوق محفوظة لمنصة الاتحاد العام للمقاولين اليمنيين
+    
+    <!-- مقدمة تعريفية -->
+    <div class="section">
+      <div class="section-title">
+        <i class="fas fa-info-circle"></i>
+        <h2>مقدمة تعريفية</h2>
+      </div>
+      <div class="section-intro">
+        <p>
+          يُعد هذا النظام منصة شاملة لتوثيق وحساب كافة أنواع الأضرار والخسائر الناتجة عن الأزمات، الحروب والنزاعات المسلحة وفقًا للمعايير الدولية وأفضل الممارسات العالمية. يساعد النظام المقاولين على إعداد ملف مطالبة متكامل ودقيق مدعومًا بالأدلة والمرجعيات القانونية، كما يحتوي على دليل المستخدم والتدريب وإدارة ملفات المطالبات لتيسير عملية المتابعة.
         </p>
+        <ul>
+          <li><strong>الفئات المستهدفة:</strong> المقاولون، الشركات الإنشائية، الجهات الحكومية، منظمات المجتمع المدني.</li>
+          <li><strong>أهمية النظام:</strong> توثيق شامل وحساب دقيق وإعداد ملف مطالبة متكامل.</li>
+          <li><strong>تنويه:</strong> تُستخدم البيانات للتقييم الأولي وقد تخضع للمراجعة من الجهات المختصة.</li>
+        </ul>
+      </div>
     </div>
+    
+    <!-- إعدادات العملة -->
+    <div class="section">
+      <div class="section-title">
+        <i class="fas fa-coins"></i>
+        <h2>إعدادات العملة</h2>
+      </div>
+      <div class="input-group">
+        <label>سعر صرف الدولار (USD) مقابل الريال (YER):</label>
+        <input type="number" id="exchangeRate" placeholder="أدخل سعر الصرف" required>
+      </div>
+    </div>
+    
+    <!-- البيانات الأساسية -->
+    <div class="section">
+      <div class="section-title">
+        <i class="fas fa-building"></i>
+        <h2>البيانات الأساسية</h2>
+      </div>
+      <div class="input-group">
+        <label>اسم الشركة/المؤسسة:</label>
+        <input type="text" id="companyName" placeholder="أدخل اسم الشركة" required>
+      </div>
+      <div class="input-group">
+        <label>اسم المقاول المسؤول:</label>
+        <input type="text" id="contractorName" placeholder="أدخل اسم المقاول" required>
+      </div>
+      <div class="input-group">
+        <label>رقم الهاتف:</label>
+        <input type="tel" id="phoneNumber" placeholder="أدخل رقم الهاتف" required>
+      </div>
+    </div>
+    
+    <!-- قسم الأضرار المباشرة -->
+    <div class="section" id="sectionDirect">
+      <div class="section-title">
+        <i class="fas fa-exclamation-circle"></i>
+        <h2>1. الأضرار والخسائر المباشرة</h2>
+      </div>
+      <div class="section-intro">
+        <p>
+          <strong>طريقة الحساب:</strong> تُحسب قيمة الضرر بضرب القيمة المدخلة بنسبة الضرر (severity) ومدة الضرر.<br>
+          <strong>المرجع القانوني:</strong> معايير IVSC وRICS – (مثال: المادة 15 من اتفاقية تقييم الأضرار الدولية).
+        </p>
+      </div>
+      <!-- بند أضرار الأصول الثابتة -->
+      <h3>أ. أضرار الأصول الثابتة</h3>
+      <div class="dynamic-list" id="fixedAssets">
+        <div class="item-card">
+          <input type="text" placeholder="مثال: مبنى رئيسي">
+          <input type="number" placeholder="قيمة الضرر (ريال)" oninput="calcFixedAssets()">
+          <select class="severity" oninput="calcFixedAssets()">
+            <option value="1">استبدال كامل (100%)</option>
+            <option value="0.7">إصلاح جزئي (70%)</option>
+            <option value="0.3">إصلاح بسيط (30%)</option>
+          </select>
+          <input type="number" placeholder="مدة الضرر (بالسنوات)" oninput="calcFixedAssets()">
+          <select class="currency">
+            <option value="YER">ريال يمني</option>
+            <option value="USD">دولار أمريكي</option>
+          </select>
+          <button class="remove-btn" onclick="this.parentElement.remove(); calcFixedAssets()">
+            <i class="fas fa-times"></i> حذف
+          </button>
+        </div>
+      </div>
+      <button class="btn" onclick="calcFixedAssets()">حساب أضرار الأصول الثابتة</button>
+      <div class="total-box" id="fixedAssetsTotalBox">
+        <h4>الإجمالي: <span id="fixedAssetsTotal">0</span> ريال</h4>
+      </div>
+      
+      <!-- بند أضرار المخزون والمواد -->
+      <h3>ب. الأضرار المادية للمخزون والمواد</h3>
+      <div class="dynamic-list" id="inventoryDamage">
+        <div class="item-card">
+          <input type="text" placeholder="مثال: مواد خام">
+          <input type="number" placeholder="قيمة الضرر (ريال)" oninput="calcInventoryDamage()">
+          <select class="severity" oninput="calcInventoryDamage()">
+            <option value="1">خسارة كاملة (100%)</option>
+            <option value="0.5">خسارة جزئية (50%)</option>
+          </select>
+          <input type="number" placeholder="مدة الضرر (بالأشهر)" oninput="calcInventoryDamage()">
+          <select class="currency">
+            <option value="YER">ريال يمني</option>
+            <option value="USD">دولار أمريكي</option>
+          </select>
+          <button class="remove-btn" onclick="this.parentElement.remove(); calcInventoryDamage()">
+            <i class="fas fa-times"></i> حذف
+          </button>
+        </div>
+      </div>
+      <button class="btn" onclick="calcInventoryDamage()">حساب أضرار المخزون</button>
+      <div class="total-box" id="inventoryDamageTotalBox">
+        <h4>الإجمالي: <span id="inventoryDamageTotal">0</span> ريال</h4>
+      </div>
+      
+      <!-- بند الأضرار المالية والتدفقات النقدية -->
+      <h3>ج. الأضرار المالية والتدفقات النقدية</h3>
+      <div class="dynamic-list" id="financialDirect">
+        <div class="item-card">
+          <input type="text" placeholder="مثال: خسارة إيرادات شهرية">
+          <input type="number" placeholder="مقدار الخسارة (ريال)" oninput="calcFinancialDirect()">
+          <input type="number" placeholder="مدة الضرر (بالأشهر)" oninput="calcFinancialDirect()">
+          <select class="currency">
+            <option value="YER">ريال يمني</option>
+            <option value="USD">دولار أمريكي</option>
+          </select>
+          <button class="remove-btn" onclick="this.parentElement.remove(); calcFinancialDirect()">
+            <i class="fas fa-times"></i> حذف
+          </button>
+        </div>
+      </div>
+      <button class="btn" onclick="calcFinancialDirect()">حساب الأضرار المالية</button>
+      <div class="total-box" id="financialDirectTotalBox">
+        <h4>الإجمالي: <span id="financialDirectTotal">0</span> ريال</h4>
+      </div>
+      
+      <!-- بند الأضرار المؤسسية -->
+      <h3>د. الأضرار المؤسسية</h3>
+      <div class="dynamic-list" id="institutionalDamage">
+        <div class="item-card">
+          <input type="text" placeholder="مثال: فقدان موظف رئيسي">
+          <input type="number" placeholder="قيمة الضرر (ريال)" oninput="calcInstitutionalDamage()">
+          <select class="severity" oninput="calcInstitutionalDamage()">
+            <option value="1">خسارة كاملة (100%)</option>
+            <option value="0.5">خسارة جزئية (50%)</option>
+          </select>
+          <input type="number" placeholder="مدة الضرر (بالسنوات)" oninput="calcInstitutionalDamage()">
+          <select class="currency">
+            <option value="YER">ريال يمني</option>
+            <option value="USD">دولار أمريكي</option>
+          </select>
+          <button class="remove-btn" onclick="this.parentElement.remove(); calcInstitutionalDamage()">
+            <i class="fas fa-times"></i> حذف
+          </button>
+        </div>
+      </div>
+      <button class="btn" onclick="calcInstitutionalDamage()">حساب الأضرار المؤسسية</button>
+      <div class="total-box" id="institutionalDamageTotalBox">
+        <h4>الإجمالي: <span id="institutionalDamageTotal">0</span> ريال</h4>
+      </div>
+    </div>
+    
+    <!-- قسم الأضرار غير المباشرة -->
+    <div class="section" id="sectionIndirect">
+      <div class="section-title">
+        <i class="fas fa-exclamation-triangle"></i>
+        <h2>2. الأضرار والخسائر غير المباشرة</h2>
+      </div>
+      <div class="section-intro">
+        <p>
+          <strong>طريقة الحساب:</strong> تُحسب قيمة الضرر غير المباشر بضرب القيمة المدخلة بنسبة التأثير ومدة الضرر.<br>
+          <strong>المرجع القانوني:</strong> معايير الأمم المتحدة لتقييم الأضرار – (مثال: المادة 20 من اتفاقية التعويضات الدولية).
+        </p>
+      </div>
+      <!-- بند تعطيل الإنتاج والتأخير -->
+      <h3>أ. تعطيل الإنتاج والتأخير</h3>
+      <div class="dynamic-list" id="productionDelay">
+        <div class="item-card">
+          <input type="text" placeholder="مثال: توقف الإنتاج">
+          <input type="number" placeholder="خسارة شهرية (ريال)" oninput="calcProductionDelay()">
+          <input type="number" placeholder="مدة التأخير (بالأشهر)" oninput="calcProductionDelay()">
+          <select class="currency">
+            <option value="YER">ريال يمني</option>
+            <option value="USD">دولار أمريكي</option>
+          </select>
+          <button class="remove-btn" onclick="this.parentElement.remove(); calcProductionDelay()">
+            <i class="fas fa-times"></i> حذف
+          </button>
+        </div>
+      </div>
+      <button class="btn" onclick="calcProductionDelay()">حساب تعطيل الإنتاج</button>
+      <div class="total-box" id="productionDelayTotalBox">
+        <h4>الإجمالي: <span id="productionDelayTotal">0</span> ريال</h4>
+      </div>
+      
+      <!-- بند خسارة القدرة التنافسية -->
+      <h3>ب. خسارة القدرة التنافسية</h3>
+      <div class="dynamic-list" id="competitiveLoss">
+        <div class="item-card">
+          <input type="text" placeholder="مثال: انخفاض حصص السوق">
+          <input type="number" placeholder="خسارة شهرية (ريال)" oninput="calcCompetitiveLoss()">
+          <input type="number" placeholder="مدة التأثير (بالأشهر)" oninput="calcCompetitiveLoss()">
+          <select class="currency">
+            <option value="YER">ريال يمني</option>
+            <option value="USD">دولار أمريكي</option>
+          </select>
+          <button class="remove-btn" onclick="this.parentElement.remove(); calcCompetitiveLoss()">
+            <i class="fas fa-times"></i> حذف
+          </button>
+        </div>
+      </div>
+      <button class="btn" onclick="calcCompetitiveLoss()">حساب خسارة القدرة التنافسية</button>
+      <div class="total-box" id="competitiveLossTotalBox">
+        <h4>الإجمالي: <span id="competitiveLossTotal">0</span> ريال</h4>
+      </div>
+      
+      <!-- بند الضرر التكنولوجي أو البرمجي -->
+      <h3>ج. الضرر التكنولوجي أو البرمجي</h3>
+      <div class="dynamic-list" id="techDamage">
+        <div class="item-card">
+          <input type="text" placeholder="مثال: تعطل نظام معلومات">
+          <input type="number" placeholder="تكلفة الإصلاح (ريال)" oninput="calcTechDamage()">
+          <input type="number" placeholder="مدة التعطل (بالأشهر)" oninput="calcTechDamage()">
+          <select class="currency">
+            <option value="YER">ريال يمني</option>
+            <option value="USD">دولار أمريكي</option>
+          </select>
+          <button class="remove-btn" onclick="this.parentElement.remove(); calcTechDamage()">
+            <i class="fas fa-times"></i> حذف
+          </button>
+        </div>
+      </div>
+      <button class="btn" onclick="calcTechDamage()">حساب الضرر التكنولوجي</button>
+      <div class="total-box" id="techDamageTotalBox">
+        <h4>الإجمالي: <span id="techDamageTotal">0</span> ريال</h4>
+      </div>
+      
+      <!-- بند الأضرار البيئية -->
+      <h3>د. الأضرار البيئية</h3>
+      <div class="dynamic-list" id="envDamage">
+        <div class="item-card">
+          <input type="text" placeholder="مثال: تلوث بيئي">
+          <input type="number" placeholder="تكلفة الإصلاح (ريال)" oninput="calcEnvDamage()">
+          <input type="number" placeholder="مدة الضرر (بالسنوات)" oninput="calcEnvDamage()">
+          <select class="currency">
+            <option value="YER">ريال يمني</option>
+            <option value="USD">دولار أمريكي</option>
+          </select>
+          <button class="remove-btn" onclick="this.parentElement.remove(); calcEnvDamage()">
+            <i class="fas fa-times"></i> حذف
+          </button>
+        </div>
+      </div>
+      <button class="btn" onclick="calcEnvDamage()">حساب الأضرار البيئية</button>
+      <div class="total-box" id="envDamageTotalBox">
+        <h4>الإجمالي: <span id="envDamageTotal">0</span> ريال</h4>
+      </div>
+    </div>
+    
+    <!-- قسم خسائر تأخر دفع المستحقات -->
+    <div class="section" id="sectionDelayed">
+      <div class="section-title">
+        <i class="fas fa-clock"></i>
+        <h2>3. خسائر تأخر دفع المستحقات</h2>
+      </div>
+      <div class="section-intro">
+        <p>
+          <strong>طريقة الحساب:</strong> تُحسب الخسائر بضرب المبلغ المتأخر في مدة التأخير (بالأشهر) مع احتساب فائدة تراكمية بنسبة 5% سنويًا تقريبًا.<br>
+          <strong>المرجع القانوني:</strong> معايير البنك الدولي والقوانين المحلية – (مثال: المادة 8 من اتفاقية التعويضات الوطنية).
+        </p>
+      </div>
+      <div class="dynamic-list" id="delayedPayments">
+        <div class="item-card">
+          <input type="text" placeholder="مثال: تأخر دفع مستحقات مشروع X">
+          <input type="number" placeholder="المبلغ المتأخر (ريال)" oninput="calculateSectionTotal('delayedPayments','delayedTotalYER','delayedTotalUSD')">
+          <input type="number" placeholder="مدة التأخير (بالأشهر)" oninput="calculateSectionTotal('delayedPayments','delayedTotalYER','delayedTotalUSD')">
+          <select class="currency">
+            <option value="YER">ريال يمني</option>
+            <option value="USD">دولار أمريكي</option>
+          </select>
+          <button class="remove-btn" onclick="this.parentElement.remove(); calculateSectionTotal('delayedPayments','delayedTotalYER','delayedTotalUSD')">
+            <i class="fas fa-times"></i> حذف
+          </button>
+        </div>
+      </div>
+      <button class="btn" onclick="calculateSectionTotal('delayedPayments','delayedTotalYER','delayedTotalUSD')">حساب خسائر تأخر الدفع</button>
+      <div class="total-box" id="delayedTotalBox">
+        <h4>الإجمالي: <span id="delayedTotalYER">0</span> ريال | <span id="delayedTotalUSD">0</span> USD</h4>
+      </div>
+    </div>
+    
+    <!-- قسم الأضرار الأخرى -->
+    <div class="section" id="sectionOther">
+      <div class="section-title">
+        <i class="fas fa-ellipsis-h"></i>
+        <h2>4. الأضرار الأخرى</h2>
+      </div>
+      <div class="section-intro">
+        <p>
+          يمكنك هنا إضافة أنواع إضافية من الأضرار التي لم تُدرج سابقًا، مع تحديد الوصف، القيمة، المدة ونسبة التأثير. يُستخدم هذا القسم لتسجيل أضرار غير متوقعة أو خاصة.
+        </p>
+      </div>
+      <div class="dynamic-list" id="otherDamages">
+        <div class="item-card">
+          <input type="text" placeholder="وصف الضرر">
+          <input type="number" placeholder="المبلغ (ريال)" oninput="calculateSectionTotal('otherDamages','otherTotalYER','otherTotalUSD')">
+          <input type="number" placeholder="مدة الضرر (بالأشهر/بالسنوات)" oninput="calculateSectionTotal('otherDamages','otherTotalYER','otherTotalUSD')">
+          <select class="severity" oninput="calculateSectionTotal('otherDamages','otherTotalYER','otherTotalUSD')">
+            <option value="1">تأثير كامل (100%)</option>
+            <option value="0.5">تأثير جزئي (50%)</option>
+          </select>
+          <select class="currency">
+            <option value="YER">ريال يمني</option>
+            <option value="USD">دولار أمريكي</option>
+          </select>
+          <button class="remove-btn" onclick="this.parentElement.remove(); calculateSectionTotal('otherDamages','otherTotalYER','otherTotalUSD')">
+            <i class="fas fa-times"></i> حذف
+          </button>
+        </div>
+      </div>
+      <button class="btn" onclick="calculateSectionTotal('otherDamages','otherTotalYER','otherTotalUSD')">حساب الأضرار الأخرى</button>
+      <div class="total-box" id="otherTotalBox">
+        <h4>الإجمالي: <span id="otherTotalYER">0</span> ريال | <span id="otherTotalUSD">0</span> USD</h4>
+      </div>
+    </div>
+    
+    <!-- قسم دليل المستخدم والتدريب -->
+    <div class="extra-section" id="userGuide">
+      <div class="section-title">
+        <i class="fas fa-book"></i>
+        <h2>دليل المستخدم والتدريب</h2>
+      </div>
+      <div class="section-intro">
+        <p>
+          يحتوي هذا القسم على تعليمات مفصلة حول كيفية استخدام النظام وإعداد ملف المطالبة:
+        </p>
+        <ol>
+          <li>ابدأ بإدخال بيانات الشركة والمقاول والاتصال في قسم "البيانات الأساسية".</li>
+          <li>قم بتحديد سعر الصرف في قسم "إعدادات العملة".</li>
+          <li>انتقل إلى أقسام الأضرار (المباشرة وغير المباشرة وخسائر تأخر الدفع والأضرار الأخرى) وأدخل التفاصيل المطلوبة لكل بند مع تحديد القيمة، النسبة والمدة.</li>
+          <li>اضغط على زر الحساب في كل قسم لمعاينة الإجمالي الفرعي لذلك القسم.</li>
+          <li>انتقل إلى قسم "الخلاصة النهائية" لمراجعة وتجميع كافة النتائج.</li>
+          <li>يمكنك استخدام أزرار الطباعة والتصدير والمشاركة أو إرسال الملف عبر البريد الإلكتروني بعد التأكد من صحة البيانات.</li>
+        </ol>
+        <p>
+          <strong>ملاحظة:</strong> تأكد من مراجعة كافة البيانات والوثائق قبل تقديم ملف المطالبة للجهات المختصة.
+        </p>
+      </div>
+    </div>
+    
+    <!-- قسم إدارة ملفات المطالبات -->
+    <div class="extra-section" id="claimsManagement">
+      <div class="section-title">
+        <i class="fas fa-folder-open"></i>
+        <h2>إدارة ملفات المطالبات</h2>
+      </div>
+      <div class="section-intro">
+        <p>
+          يتيح لك هذا القسم إدارة ملفات المطالبات الخاصة بك:
+        </p>
+        <ol>
+          <li>تخزين كافة ملفات المطالبات التي تم إعدادها باستخدام النظام.</li>
+          <li>إمكانية تصدير الملفات بصيغة PDF أو مشاركتها إلكترونيًا.</li>
+          <li>متابعة حالة المطالبة من خلال تحديث بيانات الملف وإرفاق الوثائق اللازمة.</li>
+          <li>تصدير تقارير مفصلة عن المطالبات للمتابعة مع الجهات المختصة.</li>
+        </ol>
+      </div>
+    </div>
+    
+    <!-- قسم الخلاصة النهائية -->
+    <div class="section" id="sectionFinal">
+      <div class="section-title">
+        <i class="fas fa-file-invoice-dollar"></i>
+        <h2>5. الخلاصة النهائية</h2>
+      </div>
+      <div class="total-box" id="finalTotalBox">
+        <p>الإجمالي المباشر: <span id="finalDirectTotal">0</span> ريال</p>
+        <p>الإجمالي غير المباشر: <span id="finalIndirectTotal">0</span> ريال</p>
+        <p>خسائر تأخر الدفع: <span id="finalDelayedTotal">0</span> ريال</p>
+        <p>الأضرار الأخرى: <span id="finalOtherTotal">0</span> ريال</p>
+        <p><strong>الإجمالي الكلي: <span id="grandTotal">0</span> ريال</strong></p>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;">
+        <button class="btn" onclick="calculateFinalTotal()">
+          <i class="fas fa-calculator"></i> حساب الإجمالي النهائي
+        </button>
+        <button class="btn" onclick="printForm()">
+          <i class="fas fa-print"></i> طباعة النموذج
+        </button>
+        <button class="btn" onclick="exportToPDF()">
+          <i class="fas fa-file-pdf"></i> تصدير إلى PDF
+        </button>
+        <button class="btn" onclick="shareForm()">
+          <i class="fas fa-share"></i> مشاركة النموذج
+        </button>
+        <button class="btn" onclick="sendEmail()">
+          <i class="fas fa-envelope"></i> إرسال النموذج للإيميل
+        </button>
+      </div>
+    </div>
+    
+    <!-- قسم المراجع القانونية والمعايير الدولية -->
+    <div class="legal-references">
+      <h3>6. المراجع القانونية والمعايير الدولية</h3>
+      <ul>
+        <li>مبادئ الأمم المتحدة بشأن التعويضات (القرار 60/147)</li>
+        <li>دليل البنك الدولي لتقييم الأضرار (2021)</li>
+        <li>المعايير المحاسبية الدولية (IFRS)</li>
+        <li>دليل منظمة العمل الدولية (ILO) رقم 190</li>
+        <li>بروتوكول لاهاي 1907</li>
+      </ul>
+    </div>
+    
+    <!-- قسم الخاتمة والتوصيات -->
+    <div class="section">
+      <div class="section-title">
+        <i class="fas fa-thumbs-up"></i>
+        <h2>7. الخاتمة والتوصيات</h2>
+      </div>
+      <div class="section-intro">
+        <p>
+          نشكرك على استخدام هذا النظام الشامل لحساب الأضرار والخسائر. يُرجى مراجعة وتحديث البيانات وتوثيق كافة الأدلة قبل تقديم ملف المطالبة. نوصي بالتواصل مع الجهات المختصة للحصول على التعويضات العادلة وفق المعايير الدولية وأفضل الممارسات العالمية.
+        </p>
+      </div>
+    </div>
+    
+    <!-- قسم الإقرار والموافقة -->
+    <div class="section">
+      <div class="section-title">
+        <i class="fas fa-check-circle"></i>
+        <h2>8. الإقرار والموافقة</h2>
+      </div>
+      <div class="section-intro">
+        <p>
+          بموجب هذا، أقر بصحة البيانات والمعلومات المدخلة وأوافق على استخدامها لحساب الأضرار والخسائر، وأتعهد بتحمل المسؤولية القانونية عن دقتها.
+        </p>
+        <div class="input-group">
+          <label>
+            <input type="checkbox" id="agreement" required> أوافق على صحة البيانات المقدمة.
+          </label>
+        </div>
+      </div>
+    </div>
+    
+    <!-- الفوتر -->
+    <div class="footer">
+      <div class="contact-box">
+        <i class="fas fa-phone"></i>
+        <span>01-450553</span>
+      </div>
+      <div class="contact-box">
+        <i class="fas fa-envelope"></i>
+        <span>info@guyc-ye.com</span>
+      </div>
+      <div class="contact-box">
+        <i class="fas fa-globe"></i>
+        <span><a href="https://guyc-ye.com/" target="_blank">guyc-ye.com</a></span>
+      </div>
+      <p>© 2025 الاتحاد العام للمقاولين اليمنيين. جميع الحقوق محفوظة.</p>
+    </div>
+  </div>
+  
+  <script>
+    'use strict';
+    const { jsPDF } = window.jspdf;
+    
+    // توليد رقم ملف فريد وتحديث التاريخ
+    function generateFileNumber() {
+      const timestamp = Date.now().toString().slice(-6);
+      const randomNum = Math.floor(1000 + Math.random() * 9000);
+      return `GUYC-${timestamp}-${randomNum}`;
+    }
+    function updateDateTime() {
+      const options = { 
+        weekday: 'long', 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        hour12: true 
+      };
+      document.getElementById('currentDate').textContent = new Date().toLocaleDateString('ar-YE', options);
+      document.getElementById('fileNumber').textContent = `رقم الملف: ${generateFileNumber()}`;
+    }
+    
+    // دالة لإضافة بند جديد في قسم ديناميكي
+    function addDamage(sectionId) {
+      const templates = {
+        directDamages: `
+          <select class="damage-type">
+            <option value="أضرار الأصول الثابتة">أضرار الأصول الثابتة<br>(المباني، المعدات، الأدوات)</option>
+            <option value="أضرار المخزون">الأضرار المادية للمخزون والمواد</option>
+            <option value="أضرار مالية">الأضرار المالية والتدفقات النقدية</option>
+            <option value="أضرار مؤسسية">الأضرار المؤسسية<br>(فقدان الموظفين، إصابات العمل)</option>
+          </select>
+          <input type="text" placeholder="تفاصيل البند">
+          <input type="number" placeholder="المبلغ" oninput="calculateSectionTotal('directDamages','directTotalYER','directTotalUSD')">
+          <select class="severity" oninput="calculateSectionTotal('directDamages','directTotalYER','directTotalUSD')">
+            <option value="1">استبدال كامل (100%)</option>
+            <option value="0.7">إصلاح جزئي (70%)</option>
+            <option value="0.3">إصلاح بسيط (30%)</option>
+          </select>
+          <input type="number" placeholder="مدة الضرر (بالسنوات)" oninput="calculateSectionTotal('directDamages','directTotalYER','directTotalUSD')">
+          <select class="currency">
+            <option value="YER">ريال يمني</option>
+            <option value="USD">دولار أمريكي</option>
+          </select>
+        `,
+        indirectDamages: `
+          <select class="damage-type">
+            <option value="تعطيل الإنتاج">تعطيل الإنتاج والتأخير</option>
+            <option value="خسارة تنافسية">خسارة القدرة التنافسية</option>
+            <option value="ضرر تقني">الضرر التكنولوجي أو البرمجي</option>
+            <option value="أضرار بيئية">الأضرار البيئية</option>
+          </select>
+          <input type="text" placeholder="تفاصيل البند">
+          <input type="number" placeholder="المبلغ" oninput="calculateSectionTotal('indirectDamages','indirectTotalYER','indirectTotalUSD')">
+          <select class="severity" oninput="calculateSectionTotal('indirectDamages','indirectTotalYER','indirectTotalUSD')">
+            <option value="1">تأثير كامل (100%)</option>
+            <option value="0.5">تأثير جزئي (50%)</option>
+          </select>
+          <input type="number" placeholder="مدة الضرر (بالأشهر)" oninput="calculateSectionTotal('indirectDamages','indirectTotalYER','indirectTotalUSD')">
+          <select class="currency">
+            <option value="YER">ريال يمني</option>
+            <option value="USD">دولار أمريكي</option>
+          </select>
+        `,
+        fixedAssets: `
+          <input type="text" placeholder="مثال: مبنى رئيسي">
+          <input type="number" placeholder="قيمة الضرر (ريال)" oninput="calcFixedAssets()">
+          <select class="severity" oninput="calcFixedAssets()">
+            <option value="1">استبدال كامل (100%)</option>
+            <option value="0.7">إصلاح جزئي (70%)</option>
+            <option value="0.3">إصلاح بسيط (30%)</option>
+          </select>
+          <input type="number" placeholder="مدة الضرر (بالسنوات)" oninput="calcFixedAssets()">
+          <select class="currency">
+            <option value="YER">ريال يمني</option>
+            <option value="USD">دولار أمريكي</option>
+          </select>
+        `,
+        inventoryDamage: `
+          <input type="text" placeholder="مثال: مواد خام">
+          <input type="number" placeholder="قيمة الضرر (ريال)" oninput="calcInventoryDamage()">
+          <select class="severity" oninput="calcInventoryDamage()">
+            <option value="1">خسارة كاملة (100%)</option>
+            <option value="0.5">خسارة جزئية (50%)</option>
+          </select>
+          <input type="number" placeholder="مدة الضرر (بالأشهر)" oninput="calcInventoryDamage()">
+          <select class="currency">
+            <option value="YER">ريال يمني</option>
+            <option value="USD">دولار أمريكي</option>
+          </select>
+        `,
+        financialDirect: `
+          <input type="text" placeholder="مثال: خسارة إيرادات شهرية">
+          <input type="number" placeholder="مقدار الخسارة (ريال)" oninput="calcFinancialDirect()">
+          <input type="number" placeholder="مدة الضرر (بالأشهر)" oninput="calcFinancialDirect()">
+          <select class="currency">
+            <option value="YER">ريال يمني</option>
+            <option value="USD">دولار أمريكي</option>
+          </select>
+        `,
+        institutionalDamage: `
+          <input type="text" placeholder="مثال: فقدان موظف رئيسي">
+          <input type="number" placeholder="قيمة الضرر (ريال)" oninput="calcInstitutionalDamage()">
+          <select class="severity" oninput="calcInstitutionalDamage()">
+            <option value="1">خسارة كاملة (100%)</option>
+            <option value="0.5">خسارة جزئية (50%)</option>
+          </select>
+          <input type="number" placeholder="مدة الضرر (بالسنوات)" oninput="calcInstitutionalDamage()">
+          <select class="currency">
+            <option value="YER">ريال يمني</option>
+            <option value="USD">دولار أمريكي</option>
+          </select>
+        `
+      };
+      let template = templates[sectionId];
+      if (!template) { template = document.getElementById(sectionId).innerHTML; }
+      const newItem = document.createElement('div');
+      newItem.className = 'item-card';
+      newItem.innerHTML = template + `<button class="remove-btn" onclick="this.parentElement.remove(); calculateSectionTotal('${sectionId}', '${getTotalId(sectionId, true)}', '${getTotalId(sectionId, false)}')">
+          <i class="fas fa-times"></i> حذف</button>`;
+      document.getElementById(sectionId).appendChild(newItem);
+    }
+    function getTotalId(sectionId, isYER) {
+      if(sectionId === 'directDamages') return isYER ? 'directTotalYER' : 'directTotalUSD';
+      if(sectionId === 'indirectDamages') return isYER ? 'indirectTotalYER' : 'indirectTotalUSD';
+      if(sectionId === 'fixedAssets') return isYER ? 'fixedAssetsTotal' : 'fixedAssetsTotalUSD';
+      if(sectionId === 'inventoryDamage') return isYER ? 'inventoryDamageTotal' : 'inventoryDamageTotalUSD';
+      if(sectionId === 'financialDirect') return isYER ? 'financialDirectTotal' : 'financialDirectTotalUSD';
+      if(sectionId === 'institutionalDamage') return isYER ? 'institutionalDamageTotal' : 'institutionalDamageTotalUSD';
+      if(sectionId === 'delayedPayments') return isYER ? 'delayedTotalYER' : 'delayedTotalUSD';
+      if(sectionId === 'otherDamages') return isYER ? 'otherTotalYER' : 'otherTotalUSD';
+      return isYER ? sectionId + "TotalYER" : sectionId + "TotalUSD";
+    }
+    
+    // دوال حساب لكل قسم:
+    function calcFixedAssets() {
+      let total = 0;
+      document.querySelectorAll('#fixedAssets .item-card').forEach(item => {
+        const value = parseFloat(item.querySelector('input[type="number"]').value) || 0;
+        const severity = parseFloat(item.querySelector('.severity')?.value) || 1;
+        const duration = parseFloat(item.querySelector('input[placeholder*="مدة الضرر"]')?.value) || 1;
+        total += value * severity * duration;
+      });
+      document.getElementById('fixedAssetsTotal').textContent = total.toLocaleString('ar-YE') + " ريال";
+    }
+    function calcInventoryDamage() {
+      let total = 0;
+      document.querySelectorAll('#inventoryDamage .item-card').forEach(item => {
+        const value = parseFloat(item.querySelector('input[type="number"]').value) || 0;
+        const severity = parseFloat(item.querySelector('.severity')?.value) || 1;
+        const duration = parseFloat(item.querySelector('input[placeholder*="مدة الضرر"]')?.value) || 1;
+        total += value * severity * duration;
+      });
+      document.getElementById('inventoryDamageTotal').textContent = total.toLocaleString('ar-YE') + " ريال";
+    }
+    function calcFinancialDirect() {
+      let total = 0;
+      document.querySelectorAll('#financialDirect .item-card').forEach(item => {
+        const value = parseFloat(item.querySelector('input[type="number"]').value) || 0;
+        const duration = parseFloat(item.querySelector('input[placeholder*="مدة الضرر"]')?.value) || 1;
+        total += value * duration;
+      });
+      document.getElementById('financialDirectTotal').textContent = total.toLocaleString('ar-YE') + " ريال";
+    }
+    function calcInstitutionalDamage() {
+      let total = 0;
+      document.querySelectorAll('#institutionalDamage .item-card').forEach(item => {
+        const value = parseFloat(item.querySelector('input[type="number"]').value) || 0;
+        const severity = parseFloat(item.querySelector('.severity')?.value) || 1;
+        const duration = parseFloat(item.querySelector('input[placeholder*="مدة الضرر"]')?.value) || 1;
+        total += value * severity * duration;
+      });
+      document.getElementById('institutionalDamageTotal').textContent = total.toLocaleString('ar-YE') + " ريال";
+    }
+    function calcProductionDelay() {
+      let total = 0;
+      document.querySelectorAll('#productionDelay .item-card').forEach(item => {
+        const value = parseFloat(item.querySelector('input[type="number"]').value) || 0;
+        const duration = parseFloat(item.querySelector('input[placeholder*="مدة التأخير"]')?.value) || 1;
+        total += value * duration;
+      });
+      document.getElementById('productionDelayTotal').textContent = total.toLocaleString('ar-YE') + " ريال";
+    }
+    function calcCompetitiveLoss() {
+      let total = 0;
+      document.querySelectorAll('#competitiveLoss .item-card').forEach(item => {
+        const value = parseFloat(item.querySelector('input[type="number"]').value) || 0;
+        const duration = parseFloat(item.querySelector('input[placeholder*="مدة التأثير"]')?.value) || 1;
+        total += value * duration;
+      });
+      document.getElementById('competitiveLossTotal').textContent = total.toLocaleString('ar-YE') + " ريال";
+    }
+    function calcTechDamage() {
+      let total = 0;
+      document.querySelectorAll('#techDamage .item-card').forEach(item => {
+        const value = parseFloat(item.querySelector('input[type="number"]').value) || 0;
+        const duration = parseFloat(item.querySelector('input[placeholder*="مدة التعطل"]')?.value) || 1;
+        total += value * duration;
+      });
+      document.getElementById('techDamageTotal').textContent = total.toLocaleString('ar-YE') + " ريال";
+    }
+    function calcEnvDamage() {
+      let total = 0;
+      document.querySelectorAll('#envDamage .item-card').forEach(item => {
+        const value = parseFloat(item.querySelector('input[type="number"]').value) || 0;
+        const duration = parseFloat(item.querySelector('input[placeholder*="مدة الضرر"]')?.value) || 1;
+        total += value * duration;
+      });
+      document.getElementById('envDamageTotal').textContent = total.toLocaleString('ar-YE') + " ريال";
+    }
+    
+    // دالة حساب الإجمالي النهائي لجميع الأقسام
+    function calculateFinalTotal() {
+      const direct = parseFloat(document.getElementById('directTotalYER').textContent) || 0;
+      const indirect = parseFloat(document.getElementById('indirectTotalYER').textContent) || 0;
+      const delayed = document.getElementById('delayedTotalYER') ? parseFloat(document.getElementById('delayedTotalYER').textContent) || 0 : 0;
+      const other = document.getElementById('otherTotalYER') ? parseFloat(document.getElementById('otherTotalYER').textContent) || 0 : 0;
+      const grand = direct + indirect + delayed + other;
+      document.getElementById('finalDirectTotal').textContent = direct.toLocaleString('ar-YE');
+      document.getElementById('finalIndirectTotal').textContent = indirect.toLocaleString('ar-YE');
+      if(document.getElementById('delayedTotalYER'))
+        document.getElementById('finalDelayedTotal').textContent = delayed.toLocaleString('ar-YE');
+      if(document.getElementById('otherTotalYER'))
+        document.getElementById('finalOtherTotal').textContent = other.toLocaleString('ar-YE');
+      document.getElementById('grandTotal').textContent = grand.toLocaleString('ar-YE');
+    }
+    
+    // وظائف إضافية: الطباعة، التصدير، المشاركة والإرسال عبر البريد الإلكتروني
+    function printForm() { window.print(); }
+    function exportToPDF() {
+      const doc = new jsPDF();
+      doc.text("الإجمالي النهائي للتعويضات:", 10, 10);
+      doc.text(`بالريال اليمني: ${document.getElementById('grandTotal').textContent}`, 10, 20);
+      doc.save("الإجمالي_النهائي.pdf");
+    }
+    function shareForm() {
+      if(navigator.share) {
+        navigator.share({
+          title: 'الإجمالي النهائي للتعويضات',
+          text: `الإجمالي: ${document.getElementById('grandTotal').textContent} ريال`,
+          url: window.location.href
+        }).then(() => { console.log('تمت المشاركة بنجاح'); })
+          .catch((error) => { console.error('حدث خطأ أثناء المشاركة:', error); });
+      } else { alert('المشاركة غير مدعومة في هذا المتصفح.'); }
+    }
+    function sendEmail() {
+      const subject = encodeURIComponent("ملف التعويضات - الاتحاد العام للمقاولين اليمنيين");
+      const body = encodeURIComponent(`مرحباً،
 
-    <script>
-        // تفعيل الأسئلة الشائعة
-        document.querySelectorAll('.faq-item').forEach(item => {
-            item.addEventListener('click', () => {
-                const answer = item.querySelector('p');
-                answer.style.display = answer.style.display === 'block' ? 'none' : 'block';
-            });
-        });
-    </script>
+يرجى الاطلاع على ملف التعويضات النهائي:
+
+الإجمالي: ${document.getElementById('grandTotal').textContent} ريال
+
+مع تحيات فريق الاتحاد العام للمقاولين اليمنيين.`);
+      window.location.href = `mailto:info@guyc-ye.com?subject=${subject}&body=${body}`;
+    }
+    
+    // التهيئة الأولية عند تحميل الصفحة
+    window.addEventListener('load', () => {
+      updateDateTime();
+      setInterval(updateDateTime, 60000);
+    });
+  </script>
 </body>
 </html>
