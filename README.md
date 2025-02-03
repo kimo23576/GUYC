@@ -1889,5 +1889,3 @@
       setInterval(updateDateTime, 60000);
     });
   </script>
-</body>
-</html>
