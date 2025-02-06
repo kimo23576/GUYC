@@ -762,7 +762,7 @@ function addFuturePlansLoss() {
     <!-- شعار الاتحاد العام للمقاولين اليمنيين -->
     <div class="logo-container" style="text-align: center; margin-bottom: 10px;">
         <a href="https://guyc-ye.com/" target="_blank">
-            <img src="https://guyc-ye.com/wp-content/uploads/2020/04/logo.png" alt="شعار الاتحاد العام للمقاولين اليمنيين" style="max-width: 150px;">
+            <img src="https://guyc-ye.com/wp-content/uploads/2024/06/jhjh-1.png" alt="شعار الاتحاد العام للمقاولين اليمنيين" style="max-width: 150px;">
         </a>
     </div>
     <h1>الإستمارة الذكية لتسجيل الأضرار والخسائر</h1>
