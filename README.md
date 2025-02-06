@@ -650,6 +650,59 @@
   .btn-calculate:hover {
     background-color: #D4AC0D;
   }
+  /* تنسيق الجدول في قسم الخلاصة النهائية */
+        #finalSummary table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            table-layout: fixed;
+            /* لجعل الأعمدة متساوية */
+        }
+
+        #finalSummary th,
+        #finalSummary td {
+            border: 1px solid var(--accent-color);
+            padding: 10px;
+            text-align: center;
+            font-size: 1.1rem;
+            overflow: hidden;
+            /* لإخفاء النص الزائد */
+            white-space: nowrap;
+            /* لمنع التفاف النص */
+            text-overflow: ellipsis;
+            /* لإضافة علامة (...) للنص الزائد */
+        }
+
+        #finalSummary th {
+            background-color: var(--primary-color);
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+
+        #finalSummary td {
+            color: #FFD700;
+            /* اللون الذهبي للنص */
+        }
+
+        #finalSummary tr.total-row {
+            background-color: var(--accent-color);
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        /* تحديد عرض ثابت للأعمدة (اختياري) */
+        #finalSummary .column-1 {
+            width: 5%;
+        }
+
+        #finalSummary .column-2 {
+            width: 55%;
+        }
+
+        #finalSummary .column-3,
+        #finalSummary .column-4 {
+            width: 20%;
+        }
 </style>
 <script>
   function calculateFinalSummary() {
@@ -680,8 +733,6 @@
     document.getElementById('totalSumUSD').innerText = totalUSD.toLocaleString();
   }
 </script>
-"""
-
 
 </head>
 <body>
@@ -1477,52 +1528,7 @@
     </div> <!-- نهاية قسم حساب الأضرار وأنواعها -->
     
     
-<!-- الخلاصة النهائية -->
-<div class="section" id="finalSummary">
-  <div class="section-title" style="color: #F1C40F;">
-    <i class="fas fa-file-invoice-dollar"></i>
-    <h2>الخلاصة النهائية</h2>
-  </div>
-  <div class="section-intro">
-    <p>يوضح الجدول التالي إجمالي الأضرار المحسوبة لكل قسم.</p>
-  </div>
-  <table border="1" style="width: 100%; text-align: center; border-collapse: collapse; background-color: #fff; color: #000;">
-    <thead>
-      <tr style="background-color: #F1C40F; color: #000;">
-        <th>رقم البند</th>
-        <th>الوصف</th>
-        <th>المبلغ الإجمالي بالريال اليمني</th>
-        <th>المبلغ بالدولار</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr><td>1</td><td>أضرار الأصول الثابتة</td><td id="fixedAssetsTotal">0</td><td id="fixedAssetsTotalUSD">0</td></tr>
-      <tr><td>2</td><td>أضرار المخزون</td><td id="inventoryDamageTotal">0</td><td id="inventoryDamageTotalUSD">0</td></tr>
-      <tr><td>3</td><td>الكوادر البشرية</td><td id="humanTotalYER">0</td><td id="humanTotalUSD">0</td></tr>
-      <tr><td>4</td><td>الأضرار المالية</td><td id="financialDirectTotal">0</td><td id="financialDirectTotalUSD">0</td></tr>
-      <tr><td>5</td><td>الخسائر التشغيلية</td><td id="operationalTotalYER">0</td><td id="operationalTotalUSD">0</td></tr>
-      <tr><td>6</td><td>خسائر التأخر</td><td id="delayedTotalYER">0</td><td id="delayedTotalUSD">0</td></tr>
-      <tr><td>7</td><td>الأضرار المؤسسية</td><td id="institutionalTotalYER">0</td><td id="institutionalTotalUSD">0</td></tr>
-      <tr><td>8</td><td>خسائر المطالبة القانونية</td><td id="legalClaimsTotalYER">0</td><td id="legalClaimsTotalUSD">0</td></tr>
-      <tr><td>9</td><td>تكاليف التأهيل</td><td id="rehabTotalYER">0</td><td id="rehabTotalUSD">0</td></tr>
-      <tr><td>10</td><td>تعطيل الإنتاج</td><td id="productionDelayTotalYER">0</td><td id="productionDelayTotalUSD">0</td></tr>
-      <tr><td>11</td><td>خسارة القدرة التنافسية</td><td id="competitiveLossTotalYER">0</td><td id="competitiveLossTotalUSD">0</td></tr>
-      <tr><td>12</td><td>الأضرار المعنوية والصحية</td><td id="intangibleTotalYER">0</td><td id="intangibleTotalUSD">0</td></tr>
-      <tr><td>13</td><td>الضرر التكنولوجي</td><td id="techDamageTotalYER">0</td><td id="techDamageTotalUSD">0</td></tr>
-      <tr><td>14</td><td>خسارة العملاء والسمعة</td><td id="reputationLossTotalYER">0</td><td id="reputationLossTotalUSD">0</td></tr>
-      <tr><td>15</td><td>خسارة الخطط المستقبلية</td><td id="futurePlansTotalYER">0</td><td id="futurePlansTotalUSD">0</td></tr>
-      <tr><td>16</td><td>الأضرار الأخرى</td><td id="otherTotalYER">0</td><td id="otherTotalUSD">0</td></tr>
-      <tr style="font-weight: bold; background-color: #F1C40F; color: #000;">
-        <td>18</td><td>الإجمالي الكلي</td><td id="totalSumYER">0</td><td id="totalSumUSD">0</td>
-      </tr>
-    </tbody>
-  </table>
-  <div class="actions">
-    <button class="btn" onclick="calculateFinalSummary()">
-      <i class="fas fa-calculator"></i> حساب الإجمالي
-    </button>
-  </div>
-</div>
+<!-- الخلاصة النهائية 
 
 <script>
   function calculateFinalSummary() {
@@ -1605,22 +1611,136 @@
     
     <!-- قسم الخلاصة النهائية -->
     
-    <div class="section" id="sectionFinal">
-      <div class="section-title" style="color: #F1C40F;">
-        <i class="fas fa-file-invoice-dollar"></i>
-        <h2>الخلاصة النهائية</h2>
-      </div>
-      <div class="total-box" id="finalTotalBox">
-        <p><strong>الإجمالي المباشر: <span id="finalDirectTotal">0</span> ريال</strong></p>
-        <p><strong>الإجمالي غير المباشر: <span id="finalIndirectTotal">0</span> ريال</strong></p>
-        <p><strong>خسائر التأخير: <span id="finalDelayedTotal">0</span> ريال</strong></p>
-        <p><strong>الأضرار الأخرى: <span id="finalOtherTotal">0</span> ريال</strong></p>
-        <p><strong style="font-size: 1.5em; color: var(--accent-color);">الإجمالي الكلي: <span id="grandTotal">0</span> ريال</strong></p>
-        <p><strong style="font-size: 1.5em; color: var(--accent-color);">ما يعادل بالدولار: <span id="grandTotalUSD">0</span> USD</strong></p>
-        <button class="btn" onclick="calculateFinalTotal()">
-          <i class="fas fa-calculator"></i> حساب الإجمالي النهائي
-        </button>
-      </div>
+    <div class="container">
+        <div class="section" id="finalSummary">
+            <div class="section-title">
+                <i class="fas fa-file-invoice-dollar"></i>
+                <h2>الخلاصة النهائية</h2>
+            </div>
+            <div class="section-intro">
+                <p>يوضح الجدول التالي إجمالي الأضرار المحسوبة لكل قسم.</p>
+            </div>
+            <table id="summaryTable">
+                <thead>
+                    <tr>
+                        <th class="column-1">رقم البند</th>
+                        <th class="column-2">الوصف</th>
+                        <th class="column-3">المبلغ الإجمالي بالريال اليمني</th>
+                        <th class="column-4">المبلغ بالدولار</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>أضرار الأصول الثابتة</td>
+                        <td id="fixedAssetsTotal">0</td>
+                        <td id="fixedAssetsTotalUSD">0</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>أضرار المخزون</td>
+                        <td id="inventoryDamageTotal">0</td>
+                        <td id="inventoryDamageTotalUSD">0</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>الكوادر البشرية</td>
+                        <td id="humanTotalYER">0</td>
+                        <td id="humanTotalUSD">0</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>الأضرار المالية</td>
+                        <td id="financialDirectTotal">0</td>
+                        <td id="financialDirectTotalUSD">0</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>الخسائر التشغيلية</td>
+                        <td id="operationalTotalYER">0</td>
+                        <td id="operationalTotalUSD">0</td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>خسائر التأخر</td>
+                        <td id="delayedTotalYER">0</td>
+                        <td id="delayedTotalUSD">0</td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td>الأضرار المؤسسية</td>
+                        <td id="institutionalTotalYER">0</td>
+                        <td id="institutionalTotalUSD">0</td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td>خسائر المطالبة القانونية</td>
+                        <td id="legalClaimsTotalYER">0</td>
+                        <td id="legalClaimsTotalUSD">0</td>
+                    </tr>
+                    <tr>
+                        <td>9</td>
+                        <td>تكاليف التأهيل</td>
+                        <td id="rehabTotalYER">0</td>
+                        <td id="rehabTotalUSD">0</td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td>تعطيل الإنتاج</td>
+                        <td id="productionDelayTotalYER">0</td>
+                        <td id="productionDelayTotalUSD">0</td>
+                    </tr>
+                    <tr>
+                        <td>11</td>
+                        <td>خسارة القدرة التنافسية</td>
+                        <td id="competitiveLossTotalYER">0</td>
+                        <td id="competitiveLossTotalUSD">0</td>
+                    </tr>
+                    <tr>
+                        <td>12</td>
+                        <td>الأضرار المعنوية والصحية</td>
+                        <td id="intangibleTotalYER">0</td>
+                        <td id="intangibleTotalUSD">0</td>
+                    </tr>
+                    <tr>
+                        <td>13</td>
+                        <td>الضرر التكنولوجي</td>
+                        <td id="techDamageTotalYER">0</td>
+                        <td id="techDamageTotalUSD">0</td>
+                    </tr>
+                    <tr>
+                        <td>14</td>
+                        <td>خسارة العملاء والسمعة</td>
+                        <td id="reputationLossTotalYER">0</td>
+                        <td id="reputationLossTotalUSD">0</td>
+                    </tr>
+                    <tr>
+                        <td>15</td>
+                        <td>خسارة الخطط المستقبلية</td>
+                        <td id="futurePlansTotalYER">0</td>
+                        <td id="futurePlansTotalUSD">0</td>
+                    </tr>
+                    <tr>
+                        <td>16</td>
+                        <td>الأضرار الأخرى</td>
+                        <td id="otherTotalYER">0</td>
+                        <td id="otherTotalUSD">0</td>
+                    </tr>
+                    <tr class="total-row">
+                        <td>18</td>
+                        <td>الإجمالي الكلي</td>
+                        <td id="totalSumYER">0</td>
+                        <td id="totalSumUSD">0</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="actions">
+                <button class="btn-calculate" onclick="calculateFinalSummary()">
+                    <i class="fas fa-calculator"></i> حساب الإجمالي
+                </button>
+            </div>
+        </div>
+
     </div>
     
     <!-- قسم الدليل الإرشادي الشامل لنيل التعويضات -->
