@@ -758,20 +758,18 @@ function addFuturePlansLoss() {
 }
 </script>
 
+  <div class="container">
+    <!-- الهيدر -->
 <div class="header">
-    <!-- شعار الاتحاد العام للمقاولين اليمنيين -->
-    <div class="logo-container" style="text-align: center; margin-bottom: 10px;">
-        <a href="https://guyc-ye.com/" target="_blank">
-            <img src="https://guyc-ye.com/wp-content/uploads/2024/05/GUYC-Log33o-copy.png" alt="شعار الاتحاد العام للمقاولين اليمنيين" style="max-width: 150px;">
-        </a>
-    </div>
+    <img src="https://guyc-ye.com/wp-content/uploads/2024/05/GUYC-Log33o-copy.png" alt="شعار الاتحاد العام للمقاولين اليمنيين" style="max-height:80px; background: transparent; margin-bottom:10px;">
     <h1>الإستمارة الذكية لتسجيل الأضرار والخسائر</h1>
     <h2>قطاع المقاولات اليمني - الاتحاد العام للمقاولين اليمنيين</h2>
-    <div class="reference-number" id="fileNumber"></div>
-    <div class="timestamp" id="currentDate"></div>
-    <p>زوروا موقعنا: <a href="https://guyc-ye.com/" target="_blank">guyc-ye.com</a></p>
+    <!-- باقي محتويات الهيدر -->
 </div>
-
+      <div class="reference-number" id="fileNumber"></div>
+      <div class="timestamp" id="currentDate"></div>
+      <p>زوروا موقعنا: <a href="https://guyc-ye.com/" target="_blank">guyc-ye.com</a></p>
+    </div>
     
     <!-- شريط الأخبار المتحرك (Ticker) -->
     <div class="news-ticker">
